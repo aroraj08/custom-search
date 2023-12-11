@@ -11,21 +11,44 @@ export class SearchComponent {
   keys: String[] = ['issuer', 'parAmt', 'financialMonth'];
   operators: String[] = ['contains', 'equals', 'startsWith', 'endsWith'];
   conditions: String[] = ['AND', 'OR'];
-  filters: Filter[] = [new Filter('','','')];
-  bracketOpen: boolean = false;
-
+  filters: Filter[] = [new Filter('','','','')];
+  isBracketOpen: boolean = false;
+  finalFilterList: Filter[] = [];
+  
   addFilter() {
-    this.filters.push(new Filter('','',''));
-    console.log(this.filters);
+
+    let filterSize = this.filters.length;
+    let lastInputFilter = this.filters[filterSize-1];
+    if (this.isBracketOpen) {
+      let finalFilterSize = this.finalFilterList.length;
+      if (finalFilterSize == 0) {
+        this.finalFilterList.push(lastInputFilter);  
+      } else {
+        let lastFinalFilterElement = this.finalFilterList[finalFilterSize-1];
+        let isPartOfBracket = lastFinalFilterElement.isPartOfBracket;
+        if (isPartOfBracket == true) {
+          lastFinalFilterElement.childFilters.push(lastInputFilter);
+          lastFinalFilterElement.hasChildren = true;
+        } else {
+          lastInputFilter.isPartOfBracket = true;
+          this.finalFilterList.push(lastInputFilter);
+        }
+      }
+    } else {
+      this.finalFilterList.push(lastInputFilter);
+    }
+    this.filters.push(new Filter('','','',''));
+    console.log('inputFilters :' , this.filters);
+    console.log('finalFilters :' , this.finalFilterList);
   }
 
   startBracket() {
     console.log("bracket started");
-    this.bracketOpen = true;
+    this.isBracketOpen = true;
   }
 
   endBracket() {
     console.log("bracket ended");
-    this.bracketOpen = false;
+    this.isBracketOpen = false;
   }
 }

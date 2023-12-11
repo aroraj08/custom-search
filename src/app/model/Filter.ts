@@ -4,11 +4,16 @@ export class Filter {
     operator: string;
     value: string;
     condition?: string;
+    index?: number;
+    hasChildren: boolean = false;
+    isPartOfBracket: boolean = false;
+    childFilters: Filter[] = [];
 
-    constructor(key: string, operator: string, value: string) {
+    constructor(key: string, operator: string, value: string, condition: string) {
         this.key = key;
         this.operator = operator;
         this.value = value;
+        this.condition = condition;
     }
 
     getKey() {
@@ -25,5 +30,9 @@ export class Filter {
 
     setCondition(condition: string) {
         this.condition = condition;
+    }
+
+    setIndex(index: number) {
+        this.index = index;
     }
 }
