@@ -1,0 +1,17 @@
+
+<div *ngFor="let value of filters; let i = index">
+
+    <select id="keys" [(ngModel)]="filters[i].key">
+        <option *ngFor="let key of keys" [value]="key">{{ key }}</option>
+    </select>&nbsp;&nbsp;&nbsp;
+    <select id="operators" [(ngModel)]="filters[i].operator">
+        <option *ngFor="let operator of operators" [value]="operator">{{ operator }}</option>
+    </select>&nbsp;&nbsp;&nbsp;        
+    <input [(ngModel)]="filters[i].value" placeholder="Enter filter value {{i+1}}">&nbsp;&nbsp;&nbsp;
+    <select id="conditions" [(ngModel)]="filters[i].condition">
+        <option *ngFor="let condition of conditions" [value]="condition">{{ condition }}</option>
+    </select>&nbsp;&nbsp;&nbsp;
+    <button (click)="addFilter()" *ngIf="i === filters.length-1">+</button>&nbsp;&nbsp;&nbsp;
+    <button (click)="startBracket()" *ngIf="i === filters.length-1">Open Bracket</button>&nbsp;&nbsp;&nbsp;
+    <button (click)="endBracket()" *ngIf="i === filters.length-1">Close Bracket</button>&nbsp;&nbsp;&nbsp;
+</div>
